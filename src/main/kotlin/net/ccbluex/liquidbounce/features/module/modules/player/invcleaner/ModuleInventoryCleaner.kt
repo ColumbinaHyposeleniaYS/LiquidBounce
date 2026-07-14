@@ -62,8 +62,6 @@ object ModuleInventoryCleaner : ClientModule(
     private val maxLavaBuckets by int("MaximumLavaBuckets", 2, 0..16)
     private val maxMilkBuckets by int("MaximumMilkBuckets", 2, 0..16)
 
-
-    private val blockBlackList by items("BlockBlacklist", itemSortedSetOf())
     private val itemsBlackList by items("ItemsBlacklist", itemSortedSetOf())
 
     private val isGreedy by boolean("Greedy", true)
@@ -219,7 +217,7 @@ object ModuleInventoryCleaner : ClientModule(
 
 
     private fun isItemBlackListed(item: Item): Boolean {
-        return item in blockBlackList || item in itemsBlackList
+        return item in itemsBlackList
     }
 
     private class AmountConstraintProvider(
