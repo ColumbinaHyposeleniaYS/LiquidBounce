@@ -133,6 +133,7 @@ object ModuleInventoryCleaner : ClientModule(
             return CleanupPlanPlacementTemplate(
                 slotTargets,
                 itemAmountConstraintProvider = constraintProvider::getConstraints,
+                itemBlacklist = itemsBlackList,
                 forbiddenSlots = forbiddenSlots,
                 forbiddenSlotsToFill = forbiddenSlotsToFill,
                 isGreedy = isGreedy,
