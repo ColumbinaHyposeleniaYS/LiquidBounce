@@ -247,7 +247,6 @@ class ItemCategorization(
                 is CrossbowItem -> add(CrossbowItemFacet(slot))
                 is ArrowItem -> add(ArrowItemFacet(slot))
                 is AxeItem -> {
-
                     val sharpnessLevel = itemStack.getEnchantment(Enchantments.SHARPNESS)
                     if (sharpnessLevel >= 100) {
                         add(GodAxeFacet(slot))
