@@ -39,7 +39,6 @@ import net.ccbluex.liquidbounce.utils.inventory.ItemSlot
 import net.ccbluex.liquidbounce.utils.inventory.PlayerInventoryConstraints
 import net.ccbluex.liquidbounce.utils.inventory.findNonEmptySlotsInInventory
 import net.ccbluex.liquidbounce.utils.kotlin.Priority
-import net.minecraft.world.item.Item
 
 /**
  * InventoryCleaner module
@@ -121,9 +120,9 @@ object ModuleInventoryCleaner : ClientModule(
                     ItemType.BLOCK.defaultCategory, maxBlocks,
                     ItemType.THROWABLE.defaultCategory, maxThrowables,
                     ItemType.ARROW.defaultCategory, maxArrows,
-                    ItemCategory(ItemType.BUCKET, 0), maxWaterBuckets,
-                    ItemCategory(ItemType.BUCKET, 1), maxLavaBuckets,
-                    ItemCategory(ItemType.BUCKET, 2), maxMilkBuckets,
+                    ItemSortChoice.WATER.category, maxWaterBuckets,
+                    ItemSortChoice.LAVA.category, maxLavaBuckets,
+                    ItemSortChoice.MILK.category, maxMilkBuckets,
                 ),
                 desiredValuePerFunction = referenceIntArrayMapOf(
                     ItemFunction.FOOD, maxFoods,
@@ -199,8 +198,7 @@ object ModuleInventoryCleaner : ClientModule(
         currentInventorySlots: List<ItemSlot>
     ): Boolean {
         val planDisposalItems = cleanupPlan.findItemsToThrowOut(currentInventorySlots)
-        val blacklistedItems = currentInventorySlots
-            .filter { isItemBlackListed(it.itemStack.item) }
+        val blacklistedItems = currentInventorySlots.filter { it.itemStack.item in itemsBlackList }
 
         // Blacklisted items
         val itemsToDispose = (blacklistedItems + planDisposalItems).distinct()
@@ -213,11 +211,6 @@ object ModuleInventoryCleaner : ClientModule(
         )
 
         return true
-    }
-
-
-    private fun isItemBlackListed(item: Item): Boolean {
-        return item in itemsBlackList
     }
 
     private class AmountConstraintProvider(
